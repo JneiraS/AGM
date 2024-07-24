@@ -1,12 +1,15 @@
-from src.shopping_cart import ShoppingCart
+
+from dataclasses import dataclass
+
+from src.products import Product
 
 
 class Client:
     """Ce qui permet à un client de faire ses achats"""
 
     def __init__(self, name, surname):
-        self.name = name
-        self.surname = surname
+        self.name: str = name
+        self.surname: str = surname
         self.basket = ShoppingCart(name, [])
 
     def achat(self, product, quantity, unit_price):
@@ -21,3 +24,15 @@ class Client:
             # stock (product) -= quantity
             # Ce n'est pas l'endroit pour le faire,
             # mais ça doit être fait
+
+
+@dataclass
+class ShoppingCart:
+    client: Client
+    products: list
+
+    def add(self, article: Product):
+        self.products.append(article)
+
+    def remoeve(self, article: Product):
+        self.products.remove(article)
