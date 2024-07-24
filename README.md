@@ -1,4 +1,7 @@
+### **Avancement:** ![](https://geps.dev/progress/3)
+___
 # AGM  - Gestionnaire de Stock et de Ventes
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 
 « Au bon marché » est un primeur vendant des fruits et légumes de saison, à la pièce ou au kilo. Ce programme a été développé pour faciliter les achats des clients et gérer le stock de manière efficace.
 
