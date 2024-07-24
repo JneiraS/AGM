@@ -25,7 +25,7 @@ class Stock:
 
         stock: list = []
 
-        products_dataframe = pd.read_excel('products.xlsx')
+        products_dataframe = pd.read_excel('src/products.xlsx')
 
         for i in range(len(products_dataframe)):
             len(products_dataframe)
