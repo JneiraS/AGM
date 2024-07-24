@@ -20,7 +20,7 @@ class Stock:
     def generation():
         """
         Méthode statique pour générer la liste initiale des produits en stock à partir d'un fichier Excel.
-        :return: List[Product]: Liste des objets Product représentant les produits en stock.
+        :return : List[Product] : Liste des objets Product représentant les produits en stock.
         """
 
         stock: list = []
@@ -38,5 +38,3 @@ class Stock:
                 stock.append(FruitCreator().factory_method(produit))
 
         return stock
-
-
