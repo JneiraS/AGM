@@ -18,22 +18,61 @@ class ShopTextRenderer:
     def display(self):
 
         clear_console()
-        print("Bienvennue O'Primeur")
+        print("Bienvenue O'Primeur")
         stock = Stock().generation()
 
         customer_identity: tuple = (input('Votre Nom: '), input('Votre Prenom: '))
         customer: Client = Client(customer_identity[1], customer_identity[0])
 
-        category: str = input('Envie de fruits (F) ou de légumes (L)? : ').upper()
-        clear_console()
+        while True:
 
-        if category == "F":
-            self.display_filtered_products(stock, Fruit)
+            category: str = input('Envie de fruits (F) ou de légumes (L)? \nPayer (P): ').upper()
+            clear_console()
 
-        if category == "L":
-            self.display_filtered_products(stock, Legume)
+            while True:
 
-        input('\nID article et quantité (ex: 7/1): ')
+                response: str = ""
+
+                if category == "F":
+                    self.display_and_select_product(response, stock, Fruit)
+                    break
+
+                if category == "L":
+                    self.display_and_select_product(response, stock, Legume)
+                    break
+
+                if category == "P":
+                    clear_console()
+                    print('On Affiche la Facture')
+                    input()  # pour stop le pgr
+
+    def display_and_select_product(self, response: str, stock: list, product: any) -> None:
+        """
+        Affiche les produits filtrés du stock jusqu'à ce que l'utilisateur choisisse de retourner.
+
+        Cette méthode affiche d'abord l'en-tête, puis les produits filtrés basés sur le stock et le produit
+        spécifié. Elle demande ensuite à l'utilisateur si il souhaite acheter un produit (en entrant son ID et
+        quantité) ou retourner au menu principal (en entrant 'R'). Le processus se répète jusqu'à ce que
+        l'utilisateur choisisse de retourner.
+        :param response:
+        :param stock:
+        :param product:
+        Note:
+        - Assurez-vous que les méthodes `header` et `display_filtered_products` sont correctement implémentées dans la même classe.
+        - La fonction `clear_console()` doit être définie quelque part dans votre code pour nettoyer la console après chaque itération.
+        """
+
+        while response != 'R':
+            self.header()
+            self.display_filtered_products(stock, product)
+            response: str = input('\nID Acheter(Id/Qt) ou Retour (R): ').upper()
+            clear_console()
+
+    @staticmethod
+    def header():
+
+        print(f"Id:{"":<5}  {'Name':<20} {'Qt'}\t{'Price'}")
+        print("-" * 50)
 
     @staticmethod
     def display_filtered_products(stock: list, product_type: any) -> None:
@@ -51,4 +90,4 @@ class ShopTextRenderer:
         """
         for i, e in enumerate(stock):
             if isinstance(e, product_type):
-                print(f"id:{i:<5}  {e.name:<20} {e.stock:}\t{e.price_unit:}/{e.unit:}")
+                print(f"Id:{i:<5}  {e.name:<20} {e.stock:}\t{e.price_unit:}€/{e.unit:}")
