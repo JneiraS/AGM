@@ -4,10 +4,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
-import pandas as pd
-
-products_dataframe = pd.read_excel('products.xlsx')
-
 
 @dataclass
 class Product(ABC):
