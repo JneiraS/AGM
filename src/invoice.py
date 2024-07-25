@@ -5,7 +5,8 @@ from src.client import Client
 
 def day_review():
     for invoice in Invoice.review_of_the_day:
-        print(f'{invoice.client.name} {invoice.client.name} : {invoice.calculate_total_basket_value()}')
+        print(f'{invoice.date}:\t\t{invoice.client.name} {invoice.client.name} :'
+              f' {invoice.calculate_total_basket_value()}')
     return sum([i.calculate_total_basket_value() for i in Invoice.review_of_the_day])
 
 

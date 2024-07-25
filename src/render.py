@@ -63,9 +63,9 @@ class ShopTextRenderer:
         """
 
         clear_console()
-        print('Bilan de la journée')
+        print(f'{'BILAN DE LA JOURNÉE':^30}')
         print('-' * 30)
-        print(f"\tTOTAL:\t{day_review():.2f} €")
+        print(f"\n\tTOTAL:\t{day_review():.2f} €")
         print('-' * 30)
         print(f'{'STOCK':^30}')
         print('-' * 30)
