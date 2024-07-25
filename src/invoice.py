@@ -4,7 +4,8 @@ from src.client import Client
 
 
 def day_review():
-    # print(sum([i.stock * i.price_unit for i in Invoice.review_of_the_day[0].client.basket.products]))
+    for invoice in Invoice.review_of_the_day:
+        print(f'{invoice.client.name} {invoice.client.name} : {invoice.calculate_total_basket_value()}')
     return sum([i.calculate_total_basket_value() for i in Invoice.review_of_the_day])
 
 

@@ -11,7 +11,7 @@ def main():
     stock = Stock().generation()
 
     while True:
-        shop.display(stock)
+        shop.manage_customer_transaction(stock)
 
 
 if __name__ == '__main__':

@@ -3,7 +3,7 @@ import os
 
 from src.client import Client
 from src.invoice import Invoice, day_review
-from src.products import Fruit, Legume
+from src.products import Fruit, Legume, Product
 
 
 def clear_console():
@@ -15,7 +15,12 @@ def clear_console():
 
 class ShopTextRenderer:
 
-    def display(self, stock):
+    def manage_customer_transaction(self, stock: list[Product]):
+        """
+        Gère l'affichage et la sélection de produits par le client, ainsi que le paiement.
+        :param stock:
+        :return:
+        """
 
         customer, invoice_customer, response = self.initialize_customer_interaction()
         while response != 'N':
@@ -25,26 +30,25 @@ class ShopTextRenderer:
 
             while True:
 
-                if category == "F":
-                    self.display_and_select_product(customer, stock, Fruit)
-                    break
-
-                if category == "L":
-                    self.display_and_select_product(customer, stock, Legume)
-                    break
-
-                if category == "P":
-                    clear_console()
-                    invoice_customer.print()
-
-                    response: str = input(
-                        "\nNouveau Client (N) ou afficher le bilan de la journée (B)? : ").upper()
-                    if response == 'B':
-                        self.display_daily_inventory_summary(stock)
-
-                    if response == 'N':
+                match category:
+                    case 'F':
+                        self.display_and_select_product(customer, stock, Fruit)
                         break
-                    break
+                    case 'L':
+                        self.display_and_select_product(customer, stock, Legume)
+                        break
+                    case 'P':
+                        clear_console()
+                        invoice_customer.print()
+
+                        response: str = input(
+                            "\nNouveau Client (N) ou afficher le bilan de la journée (B)? : ").upper()
+                        if response == 'B':
+                            self.display_daily_inventory_summary(stock)
+
+                        if response == 'N':
+                            break
+                        break
 
     @staticmethod
     def display_daily_inventory_summary(stock):
@@ -60,7 +64,8 @@ class ShopTextRenderer:
 
         clear_console()
         print('Bilan de la journée')
-        print(f"{day_review():.2f} €")
+        print('-' * 30)
+        print(f"\tTOTAL:\t{day_review():.2f} €")
         print('-' * 30)
         print(f'{'STOCK':^30}')
         print('-' * 30)
