@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import pandas as pd
 
-from src.products import Product, LegumeCreator, FruitCreator,Legume
+from src.products import Product, LegumeCreator, FruitCreator
 
 
 class Stock:
@@ -26,7 +26,6 @@ class Stock:
         stock: list = []
 
         products_dataframe = pd.read_excel('src/products.xlsx')
-        #products_dataframe = pd.read_excel('products.xlsx')
 
         for i in range(len(products_dataframe)):
             len(products_dataframe)

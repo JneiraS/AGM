@@ -4,7 +4,6 @@ import os
 from src.client import Client
 from src.invoice import Invoice
 from src.products import Fruit, Legume
-from src.stock import Stock
 
 
 def clear_console():
@@ -16,16 +15,9 @@ def clear_console():
 
 class ShopTextRenderer:
 
-    def display(self):
+    def display(self, stock):
 
-        clear_console()
-        print("Bienvenue O'Primeur")
-        stock = Stock().generation()
-
-        customer_identity: tuple = (input('Votre Nom: '), input('Votre Prenom: '))
-        customer: Client = Client(customer_identity[1], customer_identity[0])
-        invoice_customer = Invoice(customer)
-        response = ''
+        customer, invoice_customer, response = self.initialize_customer_interaction()
 
         while response != 'N':
 
@@ -54,6 +46,28 @@ class ShopTextRenderer:
                         break
                     break
 
+    @staticmethod
+    def initialize_customer_interaction():
+
+        """
+        Initialise une interaction avec un nouveau client en créant un profil et une facture.
+
+        Cette méthode efface la console, affiche un message de bienvenue, puis demande à l'utilisateur
+        d'entrer son nom et prénom.
+        Avec ces informations, elle crée un objet Client et génère une facture pour ce client.
+        Elle retourne l'objet Client créé, la facture associée, et une chaîne vide représentant la réponse.
+
+        :return: Un tuple contenant l'objet Client créé, l'objet Invoice associé, et une chaîne vide
+        représentant la réponse.
+        """
+
+        response = ''
+        clear_console()
+        print("Bienvenue O'Primeur")
+        customer_identity: tuple = (input('Votre Nom: '), input('Votre Prenom: '))
+        customer: Client = Client(customer_identity[1], customer_identity[0])
+        invoice_customer = Invoice(customer)
+        return customer, invoice_customer, response
 
     def display_and_select_product(self, client: Client, stock: list, product: any) -> None:
         """
