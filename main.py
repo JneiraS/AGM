@@ -7,7 +7,10 @@ from src.render import ShopTextRenderer
 def main():
 
     shop = ShopTextRenderer()
-    shop.display()
+
+    while True:
+        shop.display()
+
 
 
 if __name__ == '__main__':

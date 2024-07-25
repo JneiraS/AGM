@@ -2,6 +2,7 @@
 import os
 
 from src.client import Client
+from src.invoice import Invoice
 from src.products import Fruit, Legume
 from src.stock import Stock
 
@@ -23,8 +24,10 @@ class ShopTextRenderer:
 
         customer_identity: tuple = (input('Votre Nom: '), input('Votre Prenom: '))
         customer: Client = Client(customer_identity[1], customer_identity[0])
+        invoice_customer = Invoice(customer)
+        response = ''
 
-        while True:
+        while response != 'N':
 
             category: str = input('Envie de fruits (F) ou de légumes (L)? \nPayer (P): ').upper()
             clear_console()
@@ -32,20 +35,27 @@ class ShopTextRenderer:
             while True:
 
                 if category == "F":
-                    self.display_and_select_product(stock, Fruit)
+                    self.display_and_select_product(customer, stock, Fruit)
                     break
 
                 if category == "L":
-                    self.display_and_select_product(stock, Legume)
+                    self.display_and_select_product(customer, stock, Legume)
                     break
 
                 if category == "P":
                     clear_console()
-                    print('On Affiche la Facture')
-                    print(Client.clients)
-                    input()  # pour stop le pgr
+                    invoice_customer.print()
 
-    def display_and_select_product(self, stock: list, product: any) -> None:
+                    response: str = input("\nNouveau Client (N) ou afficher le bilan de la journée (B)? : ")
+                    if response == 'B':
+                        clear_console()
+                        print('Afficher le bilan de la journée')
+                    if response == 'N':
+                        break
+                    break
+
+
+    def display_and_select_product(self, client: Client, stock: list, product: any) -> None:
         """
         Affiche les produits filtrés du stock jusqu'à ce que l'utilisateur choisisse de retourner.
 
@@ -53,12 +63,14 @@ class ShopTextRenderer:
         spécifié. Elle demande ensuite à l'utilisateur si il souhaite acheter un produit (en entrant son ID et
         quantité) ou retourner au menu principal (en entrant 'R'). Le processus se répète jusqu'à ce que
         l'utilisateur choisisse de retourner.
-        :param response:
+        :param client:
         :param stock:
         :param product:
         Note:
-        - Assurez-vous que les méthodes `header` et `display_filtered_products` sont correctement implémentées dans la même classe.
-        - La fonction `clear_console()` doit être définie quelque part dans votre code pour nettoyer la console après chaque itération.
+        - Assurez-vous que les méthodes `header` et `display_filtered_products` sont correctement
+        implémentées dans la même classe.
+        - La fonction `clear_console()` doit être définie quelque part dans votre code pour nettoyer la
+        console après chaque itération.
         """
 
         while True:
@@ -68,6 +80,10 @@ class ShopTextRenderer:
             if response != 'R':
                 request: list = response.split(sep='/')
                 stock[int(request[0])].subtract_to_stock(float(request[1]))
+                client.basket.add(
+                    product(stock[int(request[0])].name, float(request[1]), stock[int(request[0])].unit,
+                            stock[int(
+                                request[0])].price_unit))
                 clear_console()
             else:
                 break
@@ -75,7 +91,7 @@ class ShopTextRenderer:
     @staticmethod
     def header():
 
-        print(f"Id:{"":<5}  {'Name':<20} {'Qt'}\t{'Price'}")
+        print(f"Id:{"":<5}  {'Name':<20} {'Qt'}\t\t{'Price'}")
         print("-" * 50)
 
     @staticmethod
@@ -94,4 +110,4 @@ class ShopTextRenderer:
         """
         for i, e in enumerate(stock):
             if isinstance(e, product_type):
-                print(f"Id:{i:<5}  {e.name:<20} {e.stock:}\t{e.price_unit:}€/{e.unit:}")
+                print(f"Id:{i:<5}  {e.name:<20} {e.stock:.1f}\t\t{e.price_unit:}€/{e.unit:}")
