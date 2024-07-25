@@ -1,4 +1,4 @@
-### **Avancement:** ![](https://geps.dev/progress/55)
+### **Avancement:** ![](https://geps.dev/progress/85)
 ___
 # AGM  - Gestionnaire de Stock et de Ventes
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
