@@ -21,6 +21,11 @@ class Bill:
             facture += [ligne]
         Bill.dailyBill += [self]
 
+    @classmethod
+    def reset(cls):
+        cls.dailyBill=[]
+        :
+
     def impression(self):
         print(f"Facture de {my_client.name} {my_client.surname}")
         print("Produit  |Quantité   |Prix unitaire  | Prix")
