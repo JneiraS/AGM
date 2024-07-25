@@ -2,7 +2,7 @@
 import os
 
 from src.client import Client
-from src.invoice import Invoice
+from src.invoice import Invoice, day_review
 from src.products import Fruit, Legume
 
 
@@ -18,7 +18,6 @@ class ShopTextRenderer:
     def display(self, stock):
 
         customer, invoice_customer, response = self.initialize_customer_interaction()
-
         while response != 'N':
 
             category: str = input('Envie de fruits (F) ou de légumes (L)? \nPayer (P): ').upper()
@@ -38,13 +37,35 @@ class ShopTextRenderer:
                     clear_console()
                     invoice_customer.print()
 
-                    response: str = input("\nNouveau Client (N) ou afficher le bilan de la journée (B)? : ")
+                    response: str = input(
+                        "\nNouveau Client (N) ou afficher le bilan de la journée (B)? : ").upper()
                     if response == 'B':
-                        clear_console()
-                        print('Afficher le bilan de la journée')
+                        self.display_daily_inventory_summary(stock)
+
                     if response == 'N':
                         break
                     break
+
+    @staticmethod
+    def display_daily_inventory_summary(stock):
+        """
+        Affiche un récapitulatif du stock disponible au jour.
+        Cette méthode efface l'écran, affiche un titre "Bilan de la journée",
+        suivi du montant total des ventes réalisées aujourd'hui (calculé par la fonction `day_review`),
+        et ensuite liste tous les articles disponibles dans le stock, montrant leur nom, quantité et unité.
+
+        :param stock:
+        :return:
+        """
+
+        clear_console()
+        print('Bilan de la journée')
+        print(f"{day_review():.2f} €")
+        print('-' * 30)
+        print(f'{'STOCK':^30}')
+        print('-' * 30)
+        for i in stock:
+            print(f'{i.name}  {i.stock} {i.unit}')
 
     @staticmethod
     def initialize_customer_interaction():
