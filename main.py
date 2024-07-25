@@ -2,15 +2,16 @@
 # -*- coding: utf-8 -*-
 
 from src.render import ShopTextRenderer
+from src.stock import Stock
 
 
 def main():
 
     shop = ShopTextRenderer()
+    stock = Stock().generation()
 
     while True:
-        shop.display()
-
+        shop.display(stock)
 
 
 if __name__ == '__main__':
