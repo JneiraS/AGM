@@ -1,29 +1,23 @@
 # -*- coding: utf-8 -*-
 
 from dataclasses import dataclass
+
 from src.products import Product
 
 
 class Client:
     """Ce qui permet à un client de faire ses achats"""
+    clients = []
 
     def __init__(self, name, surname):
         self.name: str = name
         self.surname: str = surname
         self.basket = ShoppingCart(name, [])
+        Client.clients.append(self)
 
     def achat(self, product, quantity, unit_price):
         """La quantité est exprimée en kilo (float ou à la pièce"""
         self.basket += (product, quantity, unit_price)
-
-    def facture(self):
-        toll = 0
-        for achat in self.basket:
-            (product, quantity, unit_price) = achat
-            toll += (quantity * unit_price)
-            # stock (product) -= quantity
-            # Ce n'est pas l'endroit pour le faire,
-            # mais ça doit être fait
 
 
 @dataclass

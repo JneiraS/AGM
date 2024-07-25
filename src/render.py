@@ -42,6 +42,7 @@ class ShopTextRenderer:
                 if category == "P":
                     clear_console()
                     print('On Affiche la Facture')
+                    print(Client.clients)
                     input()  # pour stop le pgr
 
     def display_and_select_product(self, stock: list, product: any) -> None:
