@@ -6,11 +6,14 @@ from dataclasses import dataclass
 
 
 @dataclass
-class Product(ABC):
+class Product:
     name: str
-    stock: int
+    stock: float
     unit: str
     price_unit: float
+
+    def subtract_to_stock(self, amount: float):
+        self.stock -= amount
 
 
 @dataclass
@@ -40,5 +43,4 @@ class LegumeCreator(Creator):
 
     def factory_method(self, line: list) -> Product:
         return Legume(line[1], line[2], line[3], line[4])
-
 

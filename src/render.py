@@ -31,14 +31,12 @@ class ShopTextRenderer:
 
             while True:
 
-                response: str = ""
-
                 if category == "F":
-                    self.display_and_select_product(response, stock, Fruit)
+                    self.display_and_select_product(stock, Fruit)
                     break
 
                 if category == "L":
-                    self.display_and_select_product(response, stock, Legume)
+                    self.display_and_select_product(stock, Legume)
                     break
 
                 if category == "P":
@@ -46,7 +44,7 @@ class ShopTextRenderer:
                     print('On Affiche la Facture')
                     input()  # pour stop le pgr
 
-    def display_and_select_product(self, response: str, stock: list, product: any) -> None:
+    def display_and_select_product(self, stock: list, product: any) -> None:
         """
         Affiche les produits filtrés du stock jusqu'à ce que l'utilisateur choisisse de retourner.
 
@@ -62,11 +60,16 @@ class ShopTextRenderer:
         - La fonction `clear_console()` doit être définie quelque part dans votre code pour nettoyer la console après chaque itération.
         """
 
-        while response != 'R':
+        while True:
             self.header()
             self.display_filtered_products(stock, product)
-            response: str = input('\nID Acheter(Id/Qt) ou Retour (R): ').upper()
-            clear_console()
+            response: str = input('\nAcheter (Id/Qt) ou Retour (R): ').upper()
+            if response != 'R':
+                request: list = response.split(sep='/')
+                stock[int(request[0])].subtract_to_stock(float(request[1]))
+                clear_console()
+            else:
+                break
 
     @staticmethod
     def header():
