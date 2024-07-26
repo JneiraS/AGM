@@ -7,7 +7,7 @@ from src.products import Product
 
 class Client:
     """Ce qui permet à un client de faire ses achats"""
-    clients = []
+    clients: list = []
 
     def __init__(self, name, surname):
         self.name: str = name

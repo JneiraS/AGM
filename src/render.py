@@ -7,6 +7,10 @@ from src.products import Fruit, Legume, Product
 
 
 def clear_console():
+    """
+
+    :return:
+    """
     if os.name == 'nt':  # Windows
         os.system('cls')
     else:  # Unix/Linux
@@ -90,12 +94,15 @@ class ShopTextRenderer:
         response = ''
         clear_console()
         print("Bienvenue O'Primeur")
+
         customer_identity: tuple = (input('Votre Nom: '), input('Votre Prenom: '))
+
         customer: Client = Client(customer_identity[1], customer_identity[0])
         invoice_customer = Invoice(customer)
+
         return customer, invoice_customer, response
 
-    def display_and_select_product(self, client: Client, stock: list, product: any) -> None:
+    def display_and_select_product(self, client: Client, stock: list, product_type: any) -> None:
         """
         Affiche les produits filtrés du stock jusqu'à ce que l'utilisateur choisisse de retourner.
 
@@ -105,7 +112,7 @@ class ShopTextRenderer:
         l'utilisateur choisisse de retourner.
         :param client:
         :param stock:
-        :param product:
+        :param product_type:
         Note:
         - Assurez-vous que les méthodes `header` et `display_filtered_products` sont correctement
         implémentées dans la même classe.
@@ -115,15 +122,15 @@ class ShopTextRenderer:
 
         while True:
             self.header()
-            self.display_filtered_products(stock, product)
+            self.display_filtered_products(stock, product_type)
             response: str = input('\nAcheter (Id/Qt) ou Retour (R): ').upper()
             if response != 'R':
                 request: list = response.split(sep='/')
                 stock[int(request[0])].subtract_to_stock(float(request[1]))
                 client.basket.add(
-                    product(stock[int(request[0])].name, float(request[1]), stock[int(request[0])].unit,
-                            stock[int(
-                                request[0])].price_unit))
+                    product_type(stock[int(request[0])].name, float(request[1]), stock[int(request[0])].unit,
+                                 stock[int(
+                                     request[0])].price_unit))
                 clear_console()
             else:
                 break
