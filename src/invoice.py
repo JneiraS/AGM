@@ -6,7 +6,7 @@ from src.client import Client
 def day_review():
     for invoice in Invoice.review_of_the_day:
         print(f'{invoice.date}:\t\t{invoice.client.name} {invoice.client.surname} :'
-              f' {invoice.calculate_total_basket_value()}')
+              f' {invoice.calculate_total_basket_value():.2f}')
     return sum([i.calculate_total_basket_value() for i in Invoice.review_of_the_day])
 
 
@@ -22,13 +22,14 @@ class Invoice:
         print(f"\tFacture de :{self.client.name} {self.client.surname}")
         print(f"\tDate d'acaht: {self.date}\n")
         print('\t\tRECAPITULATIF\n')
-        print('\t-------------------------')
+        print('\t' + '-' * 25)
 
         print(f"{'Name':<20} {'Qt'}\t\t{'Price'}")
         for article in self.client.basket.products:
             print(f"{article.name:<20} {article.stock}\t"
                   f"{article.stock * article.price_unit:.2f} €")
-        print(f'\t-------------------------')
+
+        print('\t' + '-' * 25)
         print(f'{'TOTAL HT':>20}:   {self.calculate_total_basket_value() * 0.8:.2f}  €')
         print(f'{'TOTAL TTC':>20}:   {self.calculate_total_basket_value():.2f}€')
 

@@ -70,7 +70,7 @@ class ShopTextRenderer:
         print(f'{'STOCK':^30}')
         print('-' * 30)
         for i in stock:
-            print(f'{i.name}  {i.stock} {i.unit}')
+            print(f'{i.name}  {i.stock:.1f} {i.unit}')
 
     @staticmethod
     def initialize_customer_interaction():
