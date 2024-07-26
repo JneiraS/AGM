@@ -15,10 +15,6 @@ class Client:
         self.basket = ShoppingCart(name, [])
         Client.clients.append(self)
 
-    def achat(self, product, quantity, unit_price):
-        """La quantité est exprimée en kilo (float ou à la pièce"""
-        self.basket += (product, quantity, unit_price)
-
 
 @dataclass
 class ShoppingCart:
@@ -28,5 +24,5 @@ class ShoppingCart:
     def add(self, article: Product):
         self.products.append(article)
 
-    def remoeve(self, article: Product):
+    def remove(self, article: Product):
         self.products.remove(article)
