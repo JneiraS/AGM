@@ -11,98 +11,17 @@ def clear_console():
 
     :return:
     """
-    if os.name == 'nt':  # Windows
-        os.system('cls')
+    if os.name == "nt":  # Windows
+        os.system("cls")
     else:  # Unix/Linux
-        os.system('clear')
+        os.system("clear")
 
 
 class ShopTextRenderer:
 
-    def manage_customer_transaction(self, stock: list[Product]):
-        """
-        Gère l'affichage et la sélection de produits par le client, ainsi que le paiement.
-        :param stock:
-        :return:
-        """
-
-        customer, invoice_customer, response = self.initialize_customer_interaction()
-        while response != 'N':
-
-            category: str = input('Envie de fruits (F) ou de légumes (L)? \nPayer (P): ').upper()
-            clear_console()
-
-            while True:
-
-                match category:
-                    case 'F':
-                        self.display_and_select_product(customer, stock, Fruit)
-                        break
-                    case 'L':
-                        self.display_and_select_product(customer, stock, Legume)
-                        break
-                    case 'P':
-                        clear_console()
-                        invoice_customer.print()
-
-                        response: str = input(
-                            "\nNouveau Client (N) ou afficher le bilan de la journée (B)? : ").upper()
-                        if response == 'B':
-                            self.display_daily_inventory_summary(stock)
-
-                        if response == 'N':
-                            break
-                        break
-
-    @staticmethod
-    def display_daily_inventory_summary(stock):
-        """
-        Affiche un récapitulatif du stock disponible au jour.
-        Cette méthode efface l'écran, affiche un titre "Bilan de la journée",
-        suivi du montant total des ventes réalisées aujourd'hui (calculé par la fonction `day_review`),
-        et ensuite liste tous les articles disponibles dans le stock, montrant leur nom, quantité et unité.
-
-        :param stock:
-        :return:
-        """
-
-        clear_console()
-        print(f'{'BILAN DE LA JOURNÉE':^30}')
-        print('-' * 30)
-        print(f"\n\tTOTAL:\t{day_review():.2f} €")
-        print('-' * 30)
-        print(f'{'STOCK':^30}')
-        print('-' * 30)
-        for i in stock:
-            print(f'{i.name}  {i.stock:.1f} {i.unit}')
-
-    @staticmethod
-    def initialize_customer_interaction():
-
-        """
-        Initialise une interaction avec un nouveau client en créant un profil et une facture.
-
-        Cette méthode efface la console, affiche un message de bienvenue, puis demande à l'utilisateur
-        d'entrer son nom et prénom.
-        Avec ces informations, elle crée un objet Client et génère une facture pour ce client.
-        Elle retourne l'objet Client créé, la facture associée, et une chaîne vide représentant la réponse.
-
-        :return: Un tuple contenant l'objet Client créé, l'objet Invoice associé, et une chaîne vide
-        représentant la réponse.
-        """
-
-        response = ''
-        clear_console()
-        print("Bienvenue O'Primeur")
-
-        customer_identity: tuple = (input('Votre Nom: '), input('Votre Prenom: '))
-
-        customer: Client = Client(customer_identity[1], customer_identity[0])
-        invoice_customer = Invoice(customer)
-
-        return customer, invoice_customer, response
-
-    def display_and_select_product(self, client: Client, stock: list, product_type: any) -> None:
+    def display_and_select_product(
+        self, client: Client, stock: list, product_type: any
+    ) -> None:
         """
         Affiche les produits filtrés du stock jusqu'à ce que l'utilisateur choisisse de retourner.
 
@@ -123,17 +42,106 @@ class ShopTextRenderer:
         while True:
             self.header()
             self.display_filtered_products(stock, product_type)
-            response: str = input('\nAcheter (Id/Qt) ou Retour (R): ').upper()
-            if response != 'R':
-                request: list = response.split(sep='/')
+            response: str = input("\nAcheter (Id/Qt) ou Retour (R): ").upper()
+            if response != "R":
+                request: list = response.split(sep="/")
                 stock[int(request[0])].subtract_to_stock(float(request[1]))
                 client.basket.add(
-                    product_type(stock[int(request[0])].name, float(request[1]), stock[int(request[0])].unit,
-                                 stock[int(
-                                     request[0])].price_unit))
+                    product_type(
+                        stock[int(request[0])].name,
+                        float(request[1]),
+                        stock[int(request[0])].unit,
+                        stock[int(request[0])].price_unit,
+                    )
+                )
                 clear_console()
             else:
                 break
+
+    def manage_customer_transaction(self, stock: list[Product]):
+        """
+        Gère l'affichage et la sélection de produits par le client, ainsi que le paiement.
+        :param stock:
+        :return:
+        """
+
+        customer, invoice_customer, response = self.initialize_customer_interaction()
+        while response != "N":
+
+            category: str = input(
+                "Envie de fruits (F) ou de légumes (L)? \nPayer (P): "
+            ).upper()
+            clear_console()
+
+            while True:
+
+                match category:
+                    case "F":
+                        self.display_and_select_product(customer, stock, Fruit)
+                        break
+                    case "L":
+                        self.display_and_select_product(customer, stock, Legume)
+                        break
+                    case "P":
+                        clear_console()
+                        invoice_customer.print()
+
+                        response: str = input(
+                            "\nNouveau Client (N) ou afficher le bilan de la journée (B)? : "
+                        ).upper()
+                        if response == "B":
+                            self.display_daily_inventory_summary(stock)
+
+                        if response == "N":
+                            break
+                        break
+
+    @staticmethod
+    def display_daily_inventory_summary(stock):
+        """
+        Affiche un récapitulatif du stock disponible au jour.
+        Cette méthode efface l'écran, affiche un titre "Bilan de la journée",
+        suivi du montant total des ventes réalisées aujourd'hui (calculé par la fonction `day_review`),
+        et ensuite liste tous les articles disponibles dans le stock, montrant leur nom, quantité et unité.
+
+        :param stock:
+        :return:
+        """
+
+        clear_console()
+        print(f"{'BILAN DE LA JOURNÉE':^30}")
+        print("-" * 30)
+        print(f"\n\tTOTAL:\t{day_review():.2f} €")
+        print("-" * 30)
+        print(f"{'STOCK':^30}")
+        print("-" * 30)
+        for i in stock:
+            print(f"{i.name}  {i.stock:.1f} {i.unit}")
+
+    @staticmethod
+    def initialize_customer_interaction():
+        """
+        Initialise une interaction avec un nouveau client en créant un profil et une facture.
+
+        Cette méthode efface la console, affiche un message de bienvenue, puis demande à l'utilisateur
+        d'entrer son nom et prénom.
+        Avec ces informations, elle crée un objet Client et génère une facture pour ce client.
+        Elle retourne l'objet Client créé, la facture associée, et une chaîne vide représentant la réponse.
+
+        :return: Un tuple contenant l'objet Client créé, l'objet Invoice associé, et une chaîne vide
+        représentant la réponse.
+        """
+
+        response = ""
+        clear_console()
+        print("Bienvenue O'Primeur")
+
+        customer_identity: tuple = (input("Votre Nom: "), input("Votre Prenom: "))
+
+        customer: Client = Client(customer_identity[1], customer_identity[0])
+        invoice_customer = Invoice(customer)
+
+        return customer, invoice_customer, response
 
     @staticmethod
     def header():
@@ -157,4 +165,6 @@ class ShopTextRenderer:
         """
         for i, e in enumerate(stock):
             if isinstance(e, product_type):
-                print(f"Id:{i:<5}  {e.name:<20} {e.stock:.1f}\t\t{e.price_unit:}€/{e.unit:}")
+                print(
+                    f"Id:{i:<5}  {e.name:<20} {e.stock:.1f}\t\t{e.price_unit:}€/{e.unit:}"
+                )

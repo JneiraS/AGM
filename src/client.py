@@ -6,7 +6,8 @@ from src.products import Product
 
 
 class Client:
-    """Ce qui permet à un client de faire ses achats"""
+    """ """
+
     clients: list = []
 
     def __init__(self, name, surname):
@@ -19,7 +20,7 @@ class Client:
 @dataclass
 class ShoppingCart:
     client: Client
-    products: list
+    products: list[Product]
 
     def add(self, article: Product):
         self.products.append(article)
